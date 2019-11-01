@@ -1,0 +1,76 @@
+<!--
+		 <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
+		 <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
+-->
+<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+<style>
+
+ .openstad-component-nlmap {
+	 width: 100%;
+	 height: 100%;
+	 background-color: #eee;
+ }
+ .map {
+	 position: absolute;
+	 top: 50px;
+	 left: 10px;
+	 width: calc(100% - 20px);
+	 height: 600px;
+ }
+
+ .map.map2 {
+	 left: calc( 50% + 5px );
+ }
+ 
+</style>
+
+<body>
+
+	<h1>React test</h1>
+
+	<!-- voorbeeld kaart -->
+	<div class="map map1">
+		<script src="dist/index.js"></script>
+		<script>
+		 function onMapClick(args) {
+			 console.log('Klik op de kaart', args)
+			 window.dekaart.addMarker({
+				 lat: args.latlng.lat,
+				 lng: args.latlng.lng,
+				 icon: L.divIcon({ html: 'x', className: 'icon', iconSize: L.point(22, 22), iconAnchor: [20, 27] }),
+			 })
+		 }
+		 function onMarkerClick(args) {
+			 console.log('Klik op een marker', args)
+		 }
+		 function createClusterIcon(cluster) {
+			 console.log('xx')
+			 var count = cluster.getChildCount();
+			 return L.divIcon({ html: count, className: 'icon cluster', iconSize: L.point(count.toString().length * 10 + 5, 22), iconAnchor: [20, 27] });
+		 }
+		</script>
+		<div class="openstad-component-nlmap" config='{"divId": "dekaart", "variant": "amaps", "zoom": 16, "onMapClick": "onMapClick", "onMarkerClick": "onMarkerClick", "clustering": { "isActive": true, "iconCreateFunction": "createClusterIcon" }, "markers": [ { "lat": 52.37004644463586, "lng": 4.901402911007405 }, { "lat": 52.37204644463586, "lng": 4.899402911007405 } ] }'></div>
+	</div>
+
+	<script>
+	 window.addEventListener('load', function(e) {
+		 console.log(window.dekaart);
+		 window.dekaart.instance.addEventListener('mapIsReady', function(e) {
+			 console.log('De kaart is klaar')
+			 window.dekaart.addMarker({
+					 lat: 52.37104644463586,
+					 lng: 4.900402911007405,
+			//		 icon: L.divIcon({ html: 'x', className: 'icon', iconSize: L.point(22, 22), iconAnchor: [20, 27] }),
+			 })
+			 window.dekaart.addMarker({
+					 lat: 52.37114644463586,
+					 lng: 4.900402911007405,
+			//		 icon: L.divIcon({ html: 'x', className: 'icon', iconSize: L.point(22, 22), iconAnchor: [20, 27] }),
+			 })
+		 }, 1500);
+	 });
+	</script>
+
+</body>

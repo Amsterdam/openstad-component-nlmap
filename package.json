@@ -1,0 +1,45 @@
+{
+  "name": "openstad-component-nlmap",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "webpack --watch",
+    "build": "webpack"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-react-css-modules": "^5.2.6",
+    "babel-plugin-transform-postcss": "^0.3.0",
+    "css-loader": "^3.0.0",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "json-loader": "^0.5.7",
+    "less": "^3.10.3",
+    "less-loader": "^5.0.0",
+    "mini-css-extract-plugin": "^0.8.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-proxy-loader": "^0.3.5",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.33.0",
+    "webpack-cli": "^3.3.9"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nlsvgtr/openstad-component-nlmap.git"
+  },
+  "author": "Niels Vegter",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nlsvgtr/openstad-component-nlmap/issues"
+  },
+  "homepage": "https://github.com/nlsvgtr/openstad-component-nlmap#readme",
+  "dependencies": {
+    "openstad-component": "git+ssh://git@github.com/Amsterdam/openstad-component.git"
+  }
+}
