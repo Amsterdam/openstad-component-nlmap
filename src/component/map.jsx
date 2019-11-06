@@ -107,7 +107,6 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 		if (self.config.clustering && self.config.clustering.isActive && L.markerClusterGroup) {
 			let iconCreateFunction = self.config.clustering.iconCreateFunction || self.createClusterIcon;
 			if (iconCreateFunction && typeof iconCreateFunction == 'string') iconCreateFunction = eval(iconCreateFunction);
-      console.log(self.config.clustering.maxClusterRadius);
 			self.markerClusterGroup = L.markerClusterGroup({iconCreateFunction, showCoverageOnHover: self.config.clustering.showCoverageOnHover, maxClusterRadius: self.config.clustering.maxClusterRadius || 80});
 		  let onClusterClick = self.config.clustering.onClusterClick || self.onClusterClick;
 			if (typeof onClusterClick == 'string') onClusterClick = eval(onClusterClick);
@@ -208,6 +207,8 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 	}
 
 	removeMarker(marker) {
+    let index = this.markers.indexOf(marker);
+    if (index > -1) this.markers.splice(index, 1)
 		this.map.removeLayer(marker);
   }
 
@@ -307,10 +308,18 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 	  var bounds = L.latLngBounds(poly);
 	  self.map.fitBounds(bounds);
 
-	  var zoom = parseInt(self.map.getZoom())
+	  // var zoom = parseInt(self.map.getZoom())
+	  // self.map.setZoom(zoom - 1)
 
   }
 
+  showMarkers(markers) {
+	  var self = this;
+    markers.forEach((marker) => {
+      self.showMarker(marker);
+    });
+  }
+  
   showMarker(marker) {
 	  var self = this;
     marker.visible = true;
@@ -321,6 +330,13 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 	  }
   }
 
+  hideMarkers(markers) {
+	  var self = this;
+    markers.forEach((marker) => {
+      self.hideMarker(marker);
+    });
+  }
+  
   hideMarker(marker) {
 	  var self = this;
     marker.visible = false;
