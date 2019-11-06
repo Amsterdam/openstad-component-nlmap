@@ -107,6 +107,7 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 		if (self.config.clustering && self.config.clustering.isActive && L.markerClusterGroup) {
 			let iconCreateFunction = self.config.clustering.iconCreateFunction || self.createClusterIcon;
 			if (iconCreateFunction && typeof iconCreateFunction == 'string') iconCreateFunction = eval(iconCreateFunction);
+      console.log(self.config.clustering.maxClusterRadius);
 			self.markerClusterGroup = L.markerClusterGroup({iconCreateFunction, showCoverageOnHover: self.config.clustering.showCoverageOnHover, maxClusterRadius: self.config.clustering.maxClusterRadius || 80});
 		  let onClusterClick = self.config.clustering.onClusterClick || self.onClusterClick;
 			if (typeof onClusterClick == 'string') onClusterClick = eval(onClusterClick);
@@ -219,7 +220,7 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 
 	createClusterIcon(cluster) {
 		var count = cluster.getChildCount();
-		return L.divIcon({ html: count, className: '', iconSize: L.point(20, 20), iconAnchor: [20, 10] });
+		return L.divIcon({ html: count, className: 'openstad-component-nlmap-icon-cluster', iconSize: L.point(20, 20), iconAnchor: [20, 10] });
 	}
 
 	createCutoutPolygon(polygon) {
@@ -351,6 +352,47 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 			  self.showMarker(marker);
 		  });
 	  }
+  }
+
+  getPointInfo(latlng, marker, next) {
+
+    // TODO: configurabel
+    var bagApiUrl1 = 'https://api.data.amsterdam.nl/bag/nummeraanduiding/?format=json&locatie=[[lat]],[[lng]],50';
+    var bagApiUrl2 = 'https://api.data.amsterdam.nl/bag/nummeraanduiding/[[id]]/?format=json';
+
+	  var self = this;
+
+	  latlng = latlng || {};
+
+	  var url = bagApiUrl1
+			  .replace(/\[\[lat\]\]/, latlng.lat)
+			  .replace(/\[\[lng\]\]/, latlng.lng);
+
+
+	  fetch(url)
+      .then((response) => {
+        return response.json();
+      })
+      .then( json => {
+			  var id = json && json.results && json.results[0] && json.results[0].landelijk_id;
+			  var url = bagApiUrl2
+					  .replace(/\[\[id\]\]/, id)
+	      fetch(url)
+          .then((response) => {
+            return response.json();
+          })
+          .then( json => {
+					  json.lat = latlng.lat;
+					  json.lng = latlng.lng;
+					  if (next) next(json, marker);
+          })
+      })
+      .catch((err) => {
+        console.log('Zoek adres: niet goed');
+        console.log(err);
+			  if (next) next({}, marker);
+      });
+
   }
 
 	onMapClick() {
