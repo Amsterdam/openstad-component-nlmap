@@ -294,19 +294,18 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 	  points.forEach(function(point) {
 		  if (point._latlng) {
 			  point = point._latlng;
-		  }
-		  if (point.position) {
+		  } else if (point.position) {
 			  point = point.position.coordinates ? { lat: point.position.coordinates[0], lng: point.position.coordinates[1] }  : point.position;
 		  }
 		  poly.push(point);
 	  })
 
-	  points.forEach(function(point) {
-		  poly.push(point);
-	  })
-
-	  var bounds = L.latLngBounds(poly);
-	  self.map.fitBounds(bounds);
+    if (poly.length == 1) {
+      self.map.panTo(new L.LatLng(poly[0].lat, poly[0].lng));
+    } else {
+	    var bounds = L.latLngBounds(poly);
+	    self.map.fitBounds(bounds);
+    }
 
 	  // var zoom = parseInt(self.map.getZoom())
 	  // self.map.setZoom(zoom - 1)
