@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import OpenStadComponent from 'openstad-component/src/index.jsx';
+// import initSingleClick from './singleclick.js';
 
 'use strict';
 
@@ -54,10 +55,19 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
   }
 
 	componentDidMount(prevProps, prevState) {
-    this.loadNextFile();
+    var self = this;
+    self.loadNextFile(function() {
+      // initSingleClick();
+			// loading script files is ready; create the map
+			self.createMap();
+			// dispatch an event
+			var event = new Event('mapIsReady');
+			self.mapIsReady = true;
+			self.instance.dispatchEvent(event);
+    });
 	}
 
-  loadNextFile() {
+  loadNextFile(next) {
     var self = this;
     var file = self.files[self._loadedFiles];
     if (file) {
@@ -74,18 +84,13 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 			}
 			if (element) {
 				element.onload = function() {
-          self.loadNextFile();
+          self.loadNextFile(next);
 				}
 				this.instance.appendChild(element);
 			}
     }
 		if (self._loadedFiles == self.files.length) {
-			// loading script files is ready; create the map
-			self.createMap();
-			// dispatch an event
-			var event = new Event('mapIsReady');
-			self.mapIsReady = true;
-			self.instance.dispatchEvent(event);
+      next()
     }
 		self._loadedFiles++;
   }
@@ -121,6 +126,7 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 		if (self.config.onMapClick) {
 			if (typeof self.config.onMapClick == 'string') self.config.onMapClick = eval(self.config.onMapClick);
 		}
+		// self.map.on('singleclick', self.config.onMapClick || self.onMapClick);
 		self.map.on('click', self.config.onMapClick || self.onMapClick);
 
 		// add polygon
@@ -191,6 +197,7 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 		let onClick = (markerData.onClick != null && markerData.onClick) || self.config.onMarkerClick || self.onMarkerClick;
 		if (onClick) {
 			if (typeof onClick == 'string') onClick = eval(onClick);
+			// marker.on('singleclick', onClick);
 			marker.on('click', onClick);
 		}
 
