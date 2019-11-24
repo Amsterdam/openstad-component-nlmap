@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import OpenStadComponent from 'openstad-component/src/index.jsx';
-// import initSingleClick from './singleclick.js';
+// import initSingleClick from '../lib/singleclick.js';
+import amapsCreateClusterIcon from '../lib/amaps-cluster-icon.js';
 
 'use strict';
 
@@ -110,7 +111,7 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 
 		// clustering
 		if (self.config.clustering && self.config.clustering.isActive && L.markerClusterGroup) {
-			let iconCreateFunction = self.config.clustering.iconCreateFunction || self.createClusterIcon;
+			let iconCreateFunction = self.config.clustering.iconCreateFunction || ( self.config.variant == 'amaps' ? amapsCreateClusterIcon.bind(self) : self.createClusterIcon );
 			if (iconCreateFunction && typeof iconCreateFunction == 'string') iconCreateFunction = eval(iconCreateFunction);
 			self.markerClusterGroup = L.markerClusterGroup({iconCreateFunction, showCoverageOnHover: self.config.clustering.showCoverageOnHover, maxClusterRadius: self.config.clustering.maxClusterRadius || 80});
 		  let onClusterClick = self.config.clustering.onClusterClick || self.onClusterClick;

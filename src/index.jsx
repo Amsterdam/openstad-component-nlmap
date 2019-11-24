@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import "./css/index.less";
+import "./css/default.less";
 
 import OpenStadComponentNLMap from './component/map.jsx';
 export {OpenStadComponentNLMap}
