@@ -377,6 +377,31 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 	  }
   }
 
+  isPointInPolygon(point, polygon) {
+
+	  // taken from http://pietschsoft.com/post/2008/07/02/Virtual-Earth-Polygon-Search-Is-Point-Within-Polygon
+
+    var i;
+    var j = polygon.length - 1;
+	  
+    var inPoly=false;
+
+	  var lat = point.lat;
+    var lng = point.lng;
+
+    for (i=0; i<polygon.length; i++) {
+
+      if ( polygon[i].lng < lng && polygon[j].lng >= lng || polygon[j].lng < lng && polygon[i].lng >= lng) {
+        if ( polygon[i].lat + ( lng - polygon[i].lng ) / ( polygon[j].lng - polygon[i].lng ) * ( polygon[j].lat -  polygon[i].lat ) < lat) {
+          inPoly=!inPoly; 
+        }
+      }
+      j=i; 
+    }
+    return inPoly; 
+
+  }
+
   getPointInfo(latlng, marker, next) {
 
     // TODO: configurabel
