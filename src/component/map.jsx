@@ -215,9 +215,13 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 	}
 
 	removeMarker(marker) {
+    if (!marker) return;
     let index = this.markers.indexOf(marker);
-    if (index > -1) this.markers.splice(index, 1)
-		this.map.removeLayer(marker);
+    if (index > -1) {
+      this.markers.splice(index, 1)
+		  this.map.removeLayer(marker);
+			this.markerClusterGroup.removeLayer(marker);
+    }
   }
 
 	updateMarker(marker, newData) {
@@ -234,6 +238,7 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 
 	createCutoutPolygon(polygon) {
 
+    console.log(polygon.length);
 		var self = this;
 
 		// polygon must defined from the south west corner to work with the outer box
@@ -252,8 +257,8 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 			}
 		});
 
-		var a = polygon.slice(0, index - 1);
-		var b = polygon.slice(index, polygon.length - 1);
+		var a = polygon.slice(0, index);
+		var b = polygon.slice(index, polygon.length);
 		polygon = b.concat(a);
 
 		// outer box
