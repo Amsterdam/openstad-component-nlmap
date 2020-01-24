@@ -233,7 +233,7 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 
 	createClusterIcon(cluster) {
 		var count = cluster.getChildCount();
-		return L.divIcon({ html: count, className: 'openstad-component-nlmap-icon-cluster', iconSize: L.point(20, 20), iconAnchor: [20, 10] });
+		return L.divIcon({ html: count, className: 'osc-nlmap-icon-cluster', iconSize: L.point(20, 20), iconAnchor: [20, 10] });
 	}
 
 	createCutoutPolygon(polygon) {
@@ -467,7 +467,7 @@ export default class OpenStadComponentNLMap extends OpenStadComponent {
 	render() {
 
     return (
-			<div id={this.divId} className={this.props.className || 'openstad-component-nlmap'} ref={el => (this.instance = el)}>
+			<div id={this.divId} className={this.props.className || 'osc-nlmap'} ref={el => (this.instance = el)}>
 				<div id={this.divId + '-map'}></div>
 			</div>
     );
